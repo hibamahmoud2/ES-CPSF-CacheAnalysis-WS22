@@ -134,7 +134,45 @@ public: // everything is public, because IDGAF
    * @param In, AbstractState that gets joined into the State.
    */
   void mustJoin(AbstractState In) {
+    
+     /*
+     * The exercise is to Fill this function with an LRU must Join.
+     * For this you need to use Sets. Associativity and Blocks.
+     */
+
+    for (int Index = 0; Index < 16; Index++) {
+      struct Set TempSet;
+      for (int Age = 0; Age < 4; Age++) {
+        for (auto E1 : Sets[Index].Associativity[Age].Blocks) {
+          // find E1 in In States Set and Age.
+          auto Ret = std::find(In.Sets[Index].Associativity[Age].Blocks.begin(),
+                        In.Sets[Index].Associativity[Age].Blocks.end(),
+                        E1);
+          if ( Ret!= In.Sets[Index].Associativity[Age].Blocks.end()) {
+              auto NewAge = std::max(Index, Age);
+              std::list<unsigned int> NewBlockList;
+              NewBlockList.push_back((unsigned int) *Ret);
+              struct Entry NewEntry = {NewBlockList};
+              TempSet.Associativity.insert(
+                  std::pair<unsigned int, struct Entry>(NewAge, NewEntry));
+          }
+        }
+       
+      }
+      Sets[Index] = TempSet;
+    }  
+      
+  }
+
+  /
+   * @brief Executes an May LRU Join on the AbstractCacheState
+   *
+   * @param In, AbstractState that gets joined into the State.
+    
+    
     /**
+    
+    
      * The exercise is to Fill this function with an LRU must Join.
      * For this you need to use Sets. Associativity and Blocks.
      */
@@ -146,6 +184,49 @@ public: // everything is public, because IDGAF
    * @param In, AbstractState that gets joined into the State.
    */
   void mayJoin(AbstractState In) {
+       /*
+     * The exercise is to Fill this function with an LRU must Join.
+     * For this you need to use Sets. Associativity and Blocks.
+     */
+
+    for (int Index = 0; Index < 16; Index++) {
+      struct Set TempSet;
+      for (int Age = 0; Age < 4; Age++) {
+        for (auto E1 : Sets[Index].Associativity[Age].Blocks) {
+          // find E1 in In States Set and Age.
+          auto Ret = std::find(In.Sets[Index].Associativity[Age].Blocks.begin(),
+                        In.Sets[Index].Associativity[Age].Blocks.end(),
+                        E1);
+          if ( Ret!= In.Sets[Index].Associativity[Age].Blocks.end()) {
+              auto NewAge = std::max(Index, Age);
+              std::list<unsigned int> NewBlockList;
+              NewBlockList.push_back((unsigned int) *Ret);
+              struct Entry NewEntry = {NewBlockList};
+              TempSet.Associativity.insert(
+                  std::pair<unsigned int, struct Entry>(NewAge, NewEntry));
+          }
+        }
+        for (auto E2 : In.Sets[Index].Associativity[Age].Blocks) {
+          // find E2 in This Set and Age.
+          auto Ret2 = std::find(Sets[Index].Associativity[Age].Blocks.begin(),
+                        Sets[Index].Associativity[Age].Blocks.end(),
+                        E2);
+          if (Ret2 != Sets[Index].Associativity[Age].Blocks.end()) {
+              auto NewAge = std::max(Index, Age);
+              std::list<unsigned int> NewBlockList;
+              NewBlockList.push_back((unsigned int) *Ret2);
+              struct Entry NewEntry = {NewBlockList};
+              TempSet.Associativity.insert(
+                  std::pair<unsigned int, struct Entry>(NewAge, NewEntry));
+          }
+        }
+       
+      }
+      Sets[Index] = TempSet;
+    }  
+  }
+    
+    
     /**
      * The exercise is to Fill this function with an LRU must Join.
      * For this you need to use Sets. Associativity and Blocks.
